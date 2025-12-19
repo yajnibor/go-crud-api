@@ -40,6 +40,20 @@ func main() {
 
 	r := gin.Default()
 
+	// 1. Load the templates folder
+	r.LoadHTMLGlob("templates/*")
+
+	// 2. Define the Homepage route
+	r.GET("/", func(c *gin.Context) {
+		// You could query your DB here to get the real count
+		bookCount := 12
+
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Gopher's Bookstore",
+			"count": bookCount,
+		})
+	})
+
 	r.GET("/books", func(c *gin.Context) {
 		books, err := queries.ListBooks(ctx)
 		if err != nil {
