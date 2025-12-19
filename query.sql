@@ -14,3 +14,6 @@ RETURNING *;
 -- name: DeleteBook :exec
 DELETE FROM books
 WHERE id = $1;
+
+-- name: CountBooks :one
+SELECT COUNT(*) FROM books;

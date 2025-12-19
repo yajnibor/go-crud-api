@@ -46,7 +46,11 @@ func main() {
 	// 2. Define the Homepage route
 	r.GET("/", func(c *gin.Context) {
 		// You could query your DB here to get the real count
-		bookCount := 12
+		bookCount, err := queries.CountBooks(ctx)
+		if err != nil {
+			log.Printf("Error counting books: %v", err)
+			bookCount = 0
+		}
 
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": "Gopher's Bookstore",

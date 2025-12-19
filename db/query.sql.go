@@ -9,6 +9,17 @@ import (
 	"context"
 )
 
+const countBooks = `-- name: CountBooks :one
+SELECT COUNT(*) FROM books
+`
+
+func (q *Queries) CountBooks(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, countBooks)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createBook = `-- name: CreateBook :one
 INSERT INTO books (title, author)
 VALUES ($1, $2)
