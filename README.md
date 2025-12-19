@@ -1,16 +1,18 @@
-# Go CRUD API
+# Go CRUD API 📚
 
-A simple RESTful CRUD API built with Go, using Gin web framework, PostgreSQL database, and sqlc for type-safe SQL queries.
+A modern RESTful CRUD API built with Go, featuring a beautiful Tailwind CSS UI, Gin web framework, PostgreSQL database, and sqlc for type-safe SQL queries.
 
-## Features
+## ✨ Features
 
 - **RESTful API** endpoints for book management
+- **Modern UI** with Tailwind CSS and responsive design
 - **Type-safe SQL queries** using sqlc
 - **PostgreSQL** database integration with pgx connection pooling
 - **Environment-based configuration** using .env files
 - **Clean architecture** with separation of concerns
+- **Nginx reverse proxy** support for production deployment
 
-## Technologies
+## 🛠️ Technologies
 
 - **Go** 1.25.5
 - **Gin** - HTTP web framework
@@ -18,24 +20,28 @@ A simple RESTful CRUD API built with Go, using Gin web framework, PostgreSQL dat
 - **pgx/v5** - PostgreSQL driver and connection pooling
 - **sqlc** - Generate type-safe Go code from SQL
 - **godotenv** - Environment variable management
+- **Tailwind CSS** - Modern UI styling
+- **Nginx** - Reverse proxy server
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 .
-├── main.go           # Application entry point
-├── go.mod            # Go module dependencies
-├── .env              # Environment configuration
-├── schema.sql        # Database schema
-├── query.sql         # SQL queries
-├── sqlc.yaml         # sqlc configuration
-└── db/               # Generated database code
-    ├── db.go
-    ├── models.go
-    └── query.sql.go
+├── main.go              # Application entry point
+├── go.mod               # Go module dependencies
+├── .env                 # Environment configuration
+├── schema.sql           # Database schema
+├── query.sql            # SQL queries
+├── sqlc.yaml            # sqlc configuration
+├── db/                  # Generated database code
+│   ├── db.go
+│   ├── models.go
+│   └── query.sql.go
+└── templates/           # HTML templates
+    └── index.html       # Landing page with Tailwind CSS
 ```
 
-## Database Schema
+## 🗄️ Database Schema
 
 The application uses a simple `books` table:
 
@@ -47,14 +53,15 @@ CREATE TABLE books (
 );
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET    | `/books` | Get all books |
+| GET    | `/` | Landing page with book count |
+| GET    | `/books` | Get all books (JSON) |
 | POST   | `/books` | Create a new book |
 
-## Setup
+## 🚀 Setup
 
 ### Prerequisites
 
@@ -100,13 +107,50 @@ sqlc generate
 
 ## Running the Application
 
+### Development Mode
 ```bash
 go run main.go
 ```
 
 The server will start on `http://localhost:8080`
 
-## Usage Examples
+### Production with Nginx
+
+1. Create Nginx configuration:
+```bash
+sudo nano /etc/nginx/sites-available/go-app
+```
+
+2. Add the configuration:
+```nginx
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+3. Enable the site and restart Nginx:
+```bash
+sudo ln -s /etc/nginx/sites-available/go-app /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl restart nginx
+```
+
+## 💻 Usage Examples
+
+### Visit the landing page
+```bash
+# Open in browser
+http://localhost:8080
+```
 
 ### Get all books
 ```bash
@@ -120,7 +164,7 @@ curl -X POST http://localhost:8080/books \
   -d '{"title": "The Go Programming Language", "author": "Alan Donovan"}'
 ```
 
-## Environment Variables
+## ⚙️ Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -130,7 +174,7 @@ curl -X POST http://localhost:8080/books \
 | DB_PASSWORD | Database password | - |
 | DB_NAME | Database name | go_projects |
 
-## Development
+## 🔧 Development
 
 ### Modifying SQL Queries
 
@@ -138,6 +182,21 @@ curl -X POST http://localhost:8080/books \
 2. Run `sqlc generate` to regenerate Go code
 3. Use the generated functions in your handlers
 
-## License
+### UI Customization
+
+The landing page uses Tailwind CSS. To customize:
+- Edit [templates/index.html](templates/index.html)
+- Modify Tailwind classes for styling
+- The design is fully responsive and includes:
+  - Gradient backgrounds
+  - Hover animations
+  - SVG icons
+  - Modern card layouts
+
+## 📝 License
 
 This project is open source and available under the MIT License.
+
+---
+
+**Built with ❤️ using Go and Tailwind CSS**
